@@ -1,0 +1,40 @@
+package org.example.chatapplication.exception;
+
+import org.example.chatapplication.exception.custom.UsernameAlreadyExistsException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidation(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getBindingResult()
+                .getFieldErrors()
+                .forEach(error ->
+                        errors.put(error.getField(),
+                                error.getDefaultMessage()));
+
+        return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<?> handleUsernameExists(UsernameAlreadyExistsException ex) {
+
+        return ResponseEntity
+                .badRequest()
+                .body(Map.of(
+                        "message",
+                        ex.getMessage()
+                ));
+    }
+
+
+}
