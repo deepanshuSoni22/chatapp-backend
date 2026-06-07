@@ -10,6 +10,8 @@ import org.example.chatapplication.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @Service
@@ -36,6 +38,13 @@ public class UserService {
         userRepository.save(user);
 
         return userMapper.toDto(user);
+    }
+
+    public List<UserResponse> getAllUsersExcept(String username) {
+        return userRepository.findAll().stream()
+                .filter(user -> !user.getUsername().equals(username))
+                .map(userMapper::toDto)
+                .toList();
     }
 
 }

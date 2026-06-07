@@ -13,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -32,6 +34,11 @@ public class AuthController {
 
         return ResponseEntity.ok(response);
 
+    }
+
+    @GetMapping("/users")
+    public List<UserResponse> getAllUsers(Authentication authentication) {
+        return userService.getAllUsersExcept(authentication.getName());
     }
 
     @GetMapping("/me")
