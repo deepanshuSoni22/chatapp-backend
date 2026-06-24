@@ -10,10 +10,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>chat-application</artifactId>
+    <artifactId>chat-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>chat-application</name>
-    <description>chat-application</description>
+    <name>chat-backend</name>
+    <description>chat-backend</description>
     <url/>
     <licenses>
         <license/>
