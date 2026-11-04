@@ -2,7 +2,6 @@ name: Daily Backend Wakeup
 
 on:
   schedule:
-    # Cron format: min hour day month day-of-week
     # 04:20 AM UTC = 09:50 AM IST (10 mins before your 10:00 AM cron)
     - cron: '20 4 * * *'
   workflow_dispatch: # Allows manual trigger from GitHub UI for testing
