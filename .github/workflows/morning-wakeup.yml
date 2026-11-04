@@ -1,0 +1,33 @@
+name: Daily Backend Wakeup
+
+on:
+  schedule:
+    # Runs at 03:30 UTC every day (09:00 AM IST)
+    # Cron format: min hour day month day-of-week
+    - cron: '30 3 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI for testing
+
+jobs:
+  wake-up-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping and wait for 200 OK
+        run: |
+          URL="https://chatapp-backend-wywm.onrender.com/api/v1/health"
+          echo "Waking up service at $URL..."
+          
+          # Poll every 10 seconds for up to 30 attempts (5 minutes total)
+          for i in {1..30}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "$URL" || true)
+            echo "Attempt $i: Received HTTP $STATUS"
+          
+            if [ "$STATUS" -eq 200 ]; then
+              echo "Backend is live and responding with 200 OK!"
+              exit 0
+            fi
+          
+            sleep 10
+          done
+          
+          echo "Backend failed to wake up within 5 minutes."
+          exit 1
